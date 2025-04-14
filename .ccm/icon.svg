@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="97"
+   height="97"
+   viewBox="0 0 25.664583 25.664583"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   sodipodi:docname="icon.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.1149729"
+     inkscape:cx="117.04321"
+     inkscape:cy="312.56366"
+     inkscape:window-width="1920"
+     inkscape:window-height="1129"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Livello 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g1"
+       transform="matrix(0.54425354,0,0,0.54425354,7.4078531,5.4886869)">
+      <rect
+         x="-10.479584"
+         y="-0.954584"
+         width="40.892666"
+         height="28.895138"
+         rx="3.0988891"
+         ry="3.0988891"
+         stroke="#008000"
+         stroke-width="2.32417"
+         fill="none"
+         id="rect2"
+         style="stroke:#e71b1a;stroke-opacity:1" />
+      <line
+         x1="-10.479584"
+         y1="3.6937494"
+         x2="30.413082"
+         y2="3.6937494"
+         stroke="#008000"
+         stroke-width="2.81427"
+         id="line2"
+         style="fill:none;fill-opacity:1;stroke:#e71b1a;stroke-opacity:1" />
+      <circle
+         cx="-5.8312502"
+         cy="1.3695837"
+         r="1.2395556"
+         fill="#008000"
+         id="circle4"
+         style="fill:#ff1b1a;fill-opacity:1;stroke:#e71b1a;stroke-width:1.54945;stroke-opacity:1" />
+      <circle
+         cx="-1.182917"
+         cy="1.3695837"
+         r="1.2395556"
+         fill="#008000"
+         id="circle5"
+         style="fill:#ff1b1a;fill-opacity:1;stroke:#e71b1a;stroke-width:1.54945;stroke-opacity:1" />
+      <circle
+         cx="3.4654164"
+         cy="1.3695837"
+         r="1.2395556"
+         fill="#008000"
+         id="circle6"
+         style="fill:#ff1b1a;fill-opacity:1;stroke:#e71b1a;stroke-width:1.54945;stroke-opacity:1" />
+      <rect
+         x="2.0646782"
+         y="10.942871"
+         width="12.643313"
+         height="9.3989468"
+         rx="2.107219"
+         stroke="#008000"
+         stroke-width="1.99026"
+         id="rect1-8"
+         style="fill:none;stroke:#00ed00;stroke-opacity:1" />
+      <ellipse
+         cx="17.868822"
+         cy="11.882766"
+         stroke="#008000"
+         stroke-width="1.99026"
+         id="circle1"
+         rx="3.1608284"
+         ry="2.819684"
+         style="fill:none;stroke:#00ed00;stroke-opacity:1" />
+      <ellipse
+         cx="17.868822"
+         cy="19.401922"
+         stroke="#008000"
+         stroke-width="1.99026"
+         id="circle2"
+         rx="3.1608284"
+         ry="2.819684"
+         style="fill:none;stroke:#00ed00;stroke-opacity:1" />
+      <polygon
+         points="3,17 0,20 0,4 3,7 "
+         fill="none"
+         stroke="#008000"
+         stroke-width="2"
+         id="polygon2"
+         transform="matrix(1.0536094,0,0,0.93989468,-1.0961489,4.3636083)"
+         style="stroke:#00ed00;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>

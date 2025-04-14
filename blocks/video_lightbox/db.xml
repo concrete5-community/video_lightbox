@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema
+  xmlns="http://www.concrete5.org/doctrine-xml/0.5"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.concrete5.org/doctrine-xml/0.5 https://concretecms.github.io/doctrine-xml/doctrine-xml-0.5.xsd"
+>
+
+  <table name="btVideoLightbox">
+    <field name="bID" type="integer">
+      <unsigned />
+      <key />
+    </field>
+
+    <field name="selectedImage" type="integer" comment="Button image">
+      <unsigned/>
+    </field>
+    <field name="vTitle" type="string" size="255" comment="Button image - Title/alternative text">
+        <notnull />
+    </field>
+    <field name="description" type="string" size="255" comment="'Button image - Video title/description">
+        <notnull />
+    </field>
+
+    <field name="vText" type="string" size="255" comment="Button text">
+        <notnull />
+    </field>
+    <field name="bWidth" type="string" size="255" comment="Button text - Width">
+        <notnull />
+    </field>
+
+    <field name="fID" type="integer" comment="Video - Local file">
+      <unsigned />
+    </field>
+
+    <field name="videoURL" type="string" size="255" comment="Video - External URL">
+        <notnull />
+    </field>
+
+    <field name="vWidth" type="string" size="255" comment="Popup - Width">
+        <notnull />
+    </field>
+    <field name="vHeight" type="string" size="255" comment="Popup - Height">
+        <notnull />
+    </field>
+
+  </table>
+
+</schema>

@@ -1,0 +1,47 @@
+{
+    "name": "concrete5-community/video_lightbox",
+    "description": "A ConcreteCMS package to show videos in popups",
+    "type": "concrete5-package",
+    "keywords": [
+        "concretecms",
+        "concrete",
+        "cms",
+        "concrete5",
+        "package",
+        "addon",
+        "video",
+        "popup",
+        "lightbox"
+    ],
+    "homepage": "https://github.com/concrete5-community/video_lightbox",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michele Locati",
+            "email": "michele@locati.it",
+            "role": "maintainer",
+            "homepage": "https://mlocati.github.io"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/concrete5-community/video_lightbox/issues",
+        "source": "https://github.com/concrete5-community/video_lightbox"
+    },
+    "require": {
+        "concrete5/core": "^8.5.2 || ^9"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/mlocati"
+        },
+        {
+            "type": "other",
+            "url": "https://paypal.me/mlocati"
+        }
+    ]
+}

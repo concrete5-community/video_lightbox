@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<concrete5-cif version="1.0">
+
+    <blocktypes>
+        <blocktype package="video_lightbox" handle="video_lightbox" />
+    </blocktypes>
+
+    <blocktypesets>
+        <blocktypeset handle="multimedia" name="Multimedia" package="video_lightbox">
+            <blocktype handle="video_lightbox" />
+        </blocktypeset>
+    </blocktypesets>
+
+</concrete5-cif>
