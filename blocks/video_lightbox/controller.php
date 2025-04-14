@@ -43,6 +43,13 @@ class Controller extends BlockController implements FileTrackableInterface
     /**
      * {@inheritdoc}
      *
+     * @see \Concrete\Core\Block\BlockController::$btCacheBlockOutput
+     */
+    protected $btCacheBlockOutput = true;
+
+    /**
+     * {@inheritdoc}
+     *
      * @see \Concrete\Core\Block\BlockController::$supportSavingNullValues
      */
     protected $supportSavingNullValues = true;
