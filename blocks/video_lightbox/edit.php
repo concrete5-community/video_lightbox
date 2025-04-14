@@ -22,6 +22,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
  * @var string $vWidth
  * @var string $vHeight
  */
+
+$tabsPrefix = version_compare(APP_VERSION, '9') < 0 ? 'ccm-tab-content-' : '';
 ?>
 <div id="ccm-videolighbox-editor" v-cloak>
 
@@ -32,107 +34,109 @@ defined('C5_EXECUTE') or die("Access Denied.");
         ['videolighbox-editor-preview', t('Preview')],
     ]) ?>
 
-    <div class="ccm-tab-content" id="ccm-tab-content-videolighbox-editor-button">
-        <div class="form-group">
-            <?= $form->label('buttonType', t('Button Type')); ?>
-            <?= $form->select(
-                'buttonType',
-                [
-                    'image' => t('Image'),
-                    'text' => t('Text'),
-                ],
-                [
-                    'v-model' => 'buttonType',
-                ]
-            ) ?>
-        </div>
-        <div v-show="buttonType === 'image'" class="form-group">
-            <?= $al->image('ccm-videolighbox-editor-image-file', 'selectedImage', t('Choose Image'), $selectedImage) ?>
-        </div>
-        <div v-show="buttonType === 'image'" class="form-group">
-            <?= $form->label('vTitle', t('Image Title')) ?>
-            <?= $form->text('vTitle', '', ['v-model.trim' => 'vTitle', 'maxlength' => '255']) ?>
-            <div class="small text-muted">
-                <?= t('This will also serve as the video title') ?>
+    <div class="tab-content">
+        <div class="ccm-tab-content tab-pane active" role="tabpanel" id="<?= $tabsPrefix ?>videolighbox-editor-button">
+            <div class="form-group">
+                <?= $form->label('buttonType', t('Button Type')); ?>
+                <?= $form->select(
+                    'buttonType',
+                    [
+                        'image' => t('Image'),
+                        'text' => t('Text'),
+                    ],
+                    [
+                        'v-model' => 'buttonType',
+                    ]
+                ) ?>
+            </div>
+            <div v-show="buttonType === 'image'" class="form-group">
+                <?= $al->image('ccm-videolighbox-editor-image-file', 'selectedImage', t('Choose Image'), $selectedImage) ?>
+            </div>
+            <div v-show="buttonType === 'image'" class="form-group">
+                <?= $form->label('vTitle', t('Image Title')) ?>
+                <?= $form->text('vTitle', '', ['v-model.trim' => 'vTitle', 'maxlength' => '255']) ?>
+                <div class="small text-muted">
+                    <?= t('This will also serve as the video title') ?>
+                </div>
+            </div>
+            <div v-show="buttonType === 'image'" class="form-group">
+                <?= $form->label('description', t('Description')) ?>
+                <?= $form->text('description', '', ['v-model.trim' => 'description', 'maxlength' => '255']) ?>
+                <div class="small text-muted">
+                    <?= t('Optional text to display below the image') ?>
+                </div>
+            </div>
+            <div v-show="buttonType === 'text'" class="form-group">
+                <?= $form->label('vText', t('Button Text')) ?>
+                <?= $form->text('vText', '', ['v-model.trim' => 'vText', 'maxlength' => '255']) ?>
+                <div class="small text-muted">
+                    <?= t('This will also serve as the video title') ?>
+                </div>
+            </div>
+            <div v-show="buttonType === 'text'" class="form-group">
+                <?= $form->label('bWidth', t('Button width')) ?>
+                <?= $form->text('bWidth', '', ['v-model.trim' => 'bWidth', 'maxlength' => '255']) ?>
             </div>
         </div>
-        <div v-show="buttonType === 'image'" class="form-group">
-            <?= $form->label('description', t('Description')) ?>
-            <?= $form->text('description', '', ['v-model.trim' => 'description', 'maxlength' => '255']) ?>
-            <div class="small text-muted">
-                <?= t('Optional text to display below the image') ?>
-            </div>
-        </div>
-        <div v-show="buttonType === 'text'" class="form-group">
-            <?= $form->label('vText', t('Button Text')) ?>
-            <?= $form->text('vText', '', ['v-model.trim' => 'vText', 'maxlength' => '255']) ?>
-            <div class="small text-muted">
-                <?= t('This will also serve as the video title') ?>
-            </div>
-        </div>
-        <div v-show="buttonType === 'text'" class="form-group">
-            <?= $form->label('bWidth', t('Button width')) ?>
-            <?= $form->text('bWidth', '', ['v-model.trim' => 'bWidth', 'maxlength' => '255']) ?>
-        </div>
-    </div>
 
-    <div class="ccm-tab-content" id="ccm-tab-content-videolighbox-editor-video">
-        <div class="form-group">
-            <?= $form->label('videoType', t('Source of video')); ?>
-            <?= $form->select(
-                'videoType',
-                [
-                    'internal' => t('File Manager'),
-                    'external' => t('External URL'),
-                ],
-                [
-                    'v-model' => 'videoType',
-                ]
-            ) ?>
-        </div>
-        <div v-show="videoType === 'internal'" class="form-group">
-            <?= $al->video('ccm-videolighbox-editor-video-file', 'fID', t('Choose Video'), $fID) ?>
-            <div class="small text-muted">
-                <?= t('Usually browsers support these video formats: %s', Misc::joinAnd(['MP4', 'WebM'])) ?>
+        <div class="ccm-tab-content tab-pane" role="tabpanel" id="<?= $tabsPrefix ?>videolighbox-editor-video">
+            <div class="form-group">
+                <?= $form->label('videoType', t('Source of video')); ?>
+                <?= $form->select(
+                    'videoType',
+                    [
+                        'internal' => t('File Manager'),
+                        'external' => t('External URL'),
+                    ],
+                    [
+                        'v-model' => 'videoType',
+                    ]
+                ) ?>
+            </div>
+            <div v-show="videoType === 'internal'" class="form-group">
+                <?= $al->video('ccm-videolighbox-editor-video-file', 'fID', t('Choose Video'), $fID) ?>
+                <div class="small text-muted">
+                    <?= t('Usually browsers support these video formats: %s', Misc::joinAnd(['MP4', 'WebM'])) ?>
+                </div>
+            </div>
+            <div v-show="videoType === 'external'" class="form-group">
+                <?= $form->label('videoURL', t('External URL')) ?>
+                <?= $form->url('videoURL', '', ['v-model.trim' => 'videoURL', 'maxlength' => '255']) ?>
+                <div class="small text-muted">
+                    <?= t('Examples') ?>
+                    <ul>
+                        <li>https://youtu.be/YYUt1MdJ6TM</li>
+                        <li>https://player.vimeo.com/video/142306245</li>
+                    </ul>
+                </div>
             </div>
         </div>
-        <div v-show="videoType === 'external'" class="form-group">
-            <?= $form->label('videoURL', t('External URL')) ?>
-            <?= $form->url('videoURL', '', ['v-model.trim' => 'videoURL', 'maxlength' => '255']) ?>
+
+        <div class="ccm-tab-content tab-pane" role="tabpanel" id="<?= $tabsPrefix ?>videolighbox-editor-videosize">
+            <div class="form-group">
+                <?= $form->label('vWidth', t('Width')) ?>
+                <?= $form->text('vWidth', '', ['v-model.trim' => 'vWidth', 'maxlength' => '255']) ?>
+            </div>
+            <div class="form-group">
+                <?= $form->label('vHeight', t('Height')) ?>
+                <?= $form->text('vHeight', '', ['v-model.trim' => 'vHeight', 'maxlength' => '255']) ?>
+            </div>
             <div class="small text-muted">
-                <?= t('Examples') ?>
+                <?= t('Examples') ?>:
                 <ul>
-                    <li>https://youtu.be/YYUt1MdJ6TM</li>
-                    <li>https://player.vimeo.com/video/142306245</li>
+                    <li v-for="s in sampleSizes">
+                        {{ s[0] }}:
+                        <a href="#" v-on:click.prevent="vWidth = s[1]">{{ s[1] }}</a>
+                        &times;
+                        <a href="#" v-on:click.prevent="vHeight = s[2]">{{ s[2] }}</a>
+                    </li>
                 </ul>
             </div>
         </div>
-    </div>
 
-    <div class="ccm-tab-content" id="ccm-tab-content-videolighbox-editor-videosize">
-        <div class="form-group">
-            <?= $form->label('vWidth', t('Width')) ?>
-            <?= $form->text('vWidth', '', ['v-model.trim' => 'vWidth', 'maxlength' => '255']) ?>
+        <div class="ccm-tab-content tab-pane" role="tabpanel" id="<?= $tabsPrefix ?>videolighbox-editor-preview">
+            <button v-bind:disabled="busy" v-on:click.prevent="showPreview" class="btn btn-default btn-secondary"><?= t('Open Popup Video') ?></button>
         </div>
-        <div class="form-group">
-            <?= $form->label('vHeight', t('Height')) ?>
-            <?= $form->text('vHeight', '', ['v-model.trim' => 'vHeight', 'maxlength' => '255']) ?>
-        </div>
-        <div class="small text-muted">
-            <?= t('Examples') ?>:
-            <ul>
-                <li v-for="s in sampleSizes">
-                    {{ s[0] }}:
-                    <a href="#" v-on:click.prevent="vWidth = s[1]">{{ s[1] }}</a>
-                    &times;
-                    <a href="#" v-on:click.prevent="vHeight = s[2]">{{ s[2] }}</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="ccm-tab-content" id="ccm-tab-content-videolighbox-editor-preview">
-        <button v-bind:disabled="busy" v-on:click.prevent="showPreview" class="btn btn-default btn-secondary"><?= t('Open Popup Video') ?></button>
     </div>
 </div>
 <?php
