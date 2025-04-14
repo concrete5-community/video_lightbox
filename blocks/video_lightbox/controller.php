@@ -241,7 +241,7 @@ class Controller extends BlockController implements FileTrackableInterface
                 $loc->popActiveContext();
             }
         }
-        $this->set('actualVideoURL', $$actualVideoURL);
+        $this->set('actualVideoURL', $actualVideoURL);
         $this->set('editModeErrorMessages', $editModeErrorMessages);
     }
 

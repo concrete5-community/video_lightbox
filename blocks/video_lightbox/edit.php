@@ -156,100 +156,117 @@ echo $template;
 <script>
 $(document).ready(function() {
 
-new Vue({
-    el: '#ccm-videolighbox-editor',
-    data() {
-        return <?= json_encode([
-            'busy' => false,
-            'buttonType' => $selectedImage ? 'image' : 'text',
-            'vTitle' => $vTitle,
-            'description' => $description,
-            'vText' => $vText,
-            'bWidth' => $bWidth,
-            'videoType' => $fID ? 'internal' : 'external',
-            'videoURL' => $videoURL,
-            'vWidth' => $vWidth,
-            'vHeight' => $vHeight,
-            'sampleSizes' => [
-                ['YouTube', 853, 480],
-                ['Vimeo', 500, 281],
-            ],
-        ]) ?>;
-    },
-    mounted() {
-        var runScripts = function() {
-            <?= implode("\n", $scripts) ?>;
-        };
-        <?php
-        if (version_compare(APP_VERSION, '9') < 0) {
-            ?>
-            var tmr;
-            tmr = setInterval(
-                function() {
-                    if ($.fn.concreteFileSelector) {
-                        clearInterval(tmr);
-                        runScripts();
-                    }
-                },
-                100
-            );
+function launchApp() {
+    new Vue({
+        el: '#ccm-videolighbox-editor',
+        data() {
+            return <?= json_encode([
+                'busy' => false,
+                'buttonType' => $selectedImage ? 'image' : 'text',
+                'vTitle' => $vTitle,
+                'description' => $description,
+                'vText' => $vText,
+                'bWidth' => $bWidth,
+                'videoType' => $fID ? 'internal' : 'external',
+                'videoURL' => $videoURL,
+                'vWidth' => $vWidth,
+                'vHeight' => $vHeight,
+                'sampleSizes' => [
+                    ['YouTube', 853, 480],
+                    ['Vimeo', 500, 281],
+                ],
+            ]) ?>;
+        },
+        mounted() {
+            var runScripts = function() {
+                <?= implode("\n", $scripts) ?>;
+            };
             <?php
-        } else {
-            ?>
-            runScripts();
-            <?php
-        }
-        ?>
-    },
-    methods: {
-        async showPreview() {
-            if (this.busy) {
-                return;
-            }
-            this.busy = true;
-            let a = null;
-            try {
-                const form = this.$el.closest('form');
-                const body = new FormData(form);
-                body.delete(<?= json_encode($token::DEFAULT_TOKEN_NAME) ?>);
-                body.append('__ccm_consider_request_as_xhr', '1');
-                body.append(<?= json_encode($token::DEFAULT_TOKEN_NAME) ?>, <?= json_encode($token->generate('ccm-video_lightbox-preview')) ?>);
-                const response = await window.fetch(
-                    <?= json_encode((string) $controller->getActionURL('generate_preview')) ?>,
-                    {
-                        headers: {
-                            Accept: 'application/json',
-                        },
-                        method: 'POST',
-                        body,
-                        cache: 'no-store',
-                    }
+            if (version_compare(APP_VERSION, '9') < 0) {
+                ?>
+                var tmr;
+                tmr = setInterval(
+                    function() {
+                        if ($.fn.concreteFileSelector) {
+                            clearInterval(tmr);
+                            runScripts();
+                        }
+                    },
+                    100
                 );
-                const responseData = await response.json();
-                if (responseData.error) {
-                    throw new Error(responseData.error.message || responseData.error);
+                <?php
+            } else {
+                ?>
+                runScripts();
+                <?php
+            }
+            ?>
+        },
+        methods: {
+            async showPreview() {
+                if (this.busy) {
+                    return;
                 }
-                a = document.createElement('a');
-                document.body.appendChild(a);
-                for (const [name, value] of Object.entries(responseData)) {
-                    a.setAttribute(name, value);
+                this.busy = true;
+                let a = null;
+                try {
+                    const form = this.$el.closest('form');
+                    const body = new FormData(form);
+                    body.delete(<?= json_encode($token::DEFAULT_TOKEN_NAME) ?>);
+                    body.append('__ccm_consider_request_as_xhr', '1');
+                    body.append(<?= json_encode($token::DEFAULT_TOKEN_NAME) ?>, <?= json_encode($token->generate('ccm-video_lightbox-preview')) ?>);
+                    const response = await window.fetch(
+                        <?= json_encode((string) $controller->getActionURL('generate_preview')) ?>,
+                        {
+                            headers: {
+                                Accept: 'application/json',
+                            },
+                            method: 'POST',
+                            body,
+                            cache: 'no-store',
+                        }
+                    );
+                    const responseData = await response.json();
+                    if (responseData.error) {
+                        throw new Error(responseData.error.message || responseData.error);
+                    }
+                    a = document.createElement('a');
+                    document.body.appendChild(a);
+                    for (const [name, value] of Object.entries(responseData)) {
+                        a.setAttribute(name, value);
+                    }
+                    new window.ccmVideoLightbox(a);
+                    a.click();
+                } catch (e) {
+                    window.ConcreteAlert.error({
+                        message: e.message || e.toString(),
+                        delay: 2000,
+                    });
+                } finally {
+                    this.busy = false;
+                    if (a) {
+                        document.body.removeChild(a);
+                    }
                 }
-                new window.ccmVideoLightbox(a);
-                a.click();
-            } catch (e) {
-                window.ConcreteAlert.error({
-                    message: e.message || e.toString(),
-                    delay: 2000,
-                });
-            } finally {
-                this.busy = false;
-                if (a) {
-                    document.body.removeChild(a);
-                }
+            },
+        },
+    });
+}
+
+if (window.Vue) {
+    launchApp();
+} else {
+    let launchAppTimer;
+    launchAppTimer = setInterval(
+        function() {
+            if (window.Vue) {
+                clearInterval(launchAppTimer);
+                launchApp();
             }
         },
-    },
-});
+        100
+    );
+}
 
 });
 </script>
