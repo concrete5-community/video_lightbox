@@ -11,7 +11,7 @@ class Controller extends Package
 {
     protected $pkgHandle = 'video_lightbox';
 
-    protected $pkgVersion = '2.0.0';
+    protected $pkgVersion = '2.0.1';
 
     /**
      * {@inheritdoc}
