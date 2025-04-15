@@ -59,7 +59,7 @@ if ($vText !== '') {
             target="_blank"
             data-width="<?= $vWidth ?>"
             data-height="<?= $vHeight ?>"
-            title="<?= h($vTitle) ?>"
+            title="<?= h($vTitle === '' ? $description : $vTitle) ?>"
         >
             <img
                 src="<?= h($selectedImageFileVersion->getRelativePath()) ?>"
