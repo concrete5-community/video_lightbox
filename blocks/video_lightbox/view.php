@@ -45,7 +45,7 @@ if ($vText !== '') {
         data-width="<?= $vWidth ?>"
         data-height="<?= $vHeight ?>"
         title="<?= h($vText) ?>"
-        <?= $bWidth === '' ? '' : "style=\"width: {$bWidth}\"" ?>
+        <?= $bWidth === '' ? '' : "style=\"width: {$bWidth}px\"" ?>
     >
         <?= h($vText) ?>
         <i class="<?= $faPlayIcon ?>" aria-hidden="true"></i>
