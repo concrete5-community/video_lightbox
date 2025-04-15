@@ -25,17 +25,17 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 $tabsPrefix = version_compare(APP_VERSION, '9') < 0 ? 'ccm-tab-content-' : '';
 ?>
-<div id="ccm-videolighbox-editor" v-cloak>
+<div id="ccm-videolightbox-editor" v-cloak>
 
     <?= $ui->tabs([
-        ['videolighbox-editor-button', t('Button'), true],
-        ['videolighbox-editor-video', t('Video')],
-        ['videolighbox-editor-videosize', t('Video Size')],
-        ['videolighbox-editor-preview', t('Preview')],
+        ['videolightbox-editor-button', t('Button'), true],
+        ['videolightbox-editor-video', t('Video')],
+        ['videolightbox-editor-videosize', t('Video Size')],
+        ['videolightbox-editor-preview', t('Preview')],
     ]) ?>
 
     <div class="tab-content">
-        <div class="ccm-tab-content tab-pane active" role="tabpanel" id="<?= $tabsPrefix ?>videolighbox-editor-button">
+        <div class="ccm-tab-content tab-pane active" role="tabpanel" id="<?= $tabsPrefix ?>videolightbox-editor-button">
             <div class="form-group">
                 <?= $form->label('buttonType', t('Button Type')); ?>
                 <?= $form->select(
@@ -50,7 +50,7 @@ $tabsPrefix = version_compare(APP_VERSION, '9') < 0 ? 'ccm-tab-content-' : '';
                 ) ?>
             </div>
             <div v-show="buttonType === 'image'" class="form-group">
-                <?= $al->image('ccm-videolighbox-editor-image-file', 'selectedImage', t('Choose Image'), $selectedImage) ?>
+                <?= $al->image('ccm-videolightbox-editor-image-file', 'selectedImage', t('Choose Image'), $selectedImage) ?>
             </div>
             <div v-show="buttonType === 'image'" class="form-group">
                 <?= $form->label('vTitle', t('Image Title')) ?>
@@ -79,7 +79,7 @@ $tabsPrefix = version_compare(APP_VERSION, '9') < 0 ? 'ccm-tab-content-' : '';
             </div>
         </div>
 
-        <div class="ccm-tab-content tab-pane" role="tabpanel" id="<?= $tabsPrefix ?>videolighbox-editor-video">
+        <div class="ccm-tab-content tab-pane" role="tabpanel" id="<?= $tabsPrefix ?>videolightbox-editor-video">
             <div class="form-group">
                 <?= $form->label('videoType', t('Source of video')); ?>
                 <?= $form->select(
@@ -94,7 +94,7 @@ $tabsPrefix = version_compare(APP_VERSION, '9') < 0 ? 'ccm-tab-content-' : '';
                 ) ?>
             </div>
             <div v-show="videoType === 'internal'" class="form-group">
-                <?= $al->video('ccm-videolighbox-editor-video-file', 'fID', t('Choose Video'), $fID) ?>
+                <?= $al->video('ccm-videolightbox-editor-video-file', 'fID', t('Choose Video'), $fID) ?>
                 <div class="small text-muted">
                     <?= t('Usually browsers support these video formats: %s', Misc::joinAnd(['MP4', 'WebM'])) ?>
                 </div>
@@ -112,7 +112,7 @@ $tabsPrefix = version_compare(APP_VERSION, '9') < 0 ? 'ccm-tab-content-' : '';
             </div>
         </div>
 
-        <div class="ccm-tab-content tab-pane" role="tabpanel" id="<?= $tabsPrefix ?>videolighbox-editor-videosize">
+        <div class="ccm-tab-content tab-pane" role="tabpanel" id="<?= $tabsPrefix ?>videolightbox-editor-videosize">
             <div class="form-group">
                 <?= $form->label('vWidth', t('Width')) ?>
                 <?= $form->text('vWidth', '', ['v-model.trim' => 'vWidth', 'maxlength' => '255']) ?>
@@ -134,7 +134,7 @@ $tabsPrefix = version_compare(APP_VERSION, '9') < 0 ? 'ccm-tab-content-' : '';
             </div>
         </div>
 
-        <div class="ccm-tab-content tab-pane" role="tabpanel" id="<?= $tabsPrefix ?>videolighbox-editor-preview">
+        <div class="ccm-tab-content tab-pane" role="tabpanel" id="<?= $tabsPrefix ?>videolightbox-editor-preview">
             <button v-bind:disabled="busy" v-on:click.prevent="showPreview" class="btn btn-default btn-secondary"><?= t('Open Popup Video') ?></button>
         </div>
     </div>
@@ -162,7 +162,7 @@ $(document).ready(function() {
 
 function launchApp() {
     new Vue({
-        el: '#ccm-videolighbox-editor',
+        el: '#ccm-videolightbox-editor',
         data() {
             return <?= json_encode([
                 'busy' => false,

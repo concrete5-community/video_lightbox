@@ -1,7 +1,32 @@
 (function() {
+'use strict';
 
+/**
+ * @param {string} tagName 
+ * @param {Object<string,string>} attributes 
+ *
+ * @returns {HTMLElement}
+ */
+function createElement(tagName, attributes) {
+    const element = document.createElement(tagName);
+    for (const [key, value] of Object.entries(attributes)) {
+        if (key.startsWith('data-')) {
+            element.dataset[key.substring(5)] = value;
+        } else {
+            element.setAttribute(key, value);
+        }
+    }
+    return element;
+}
+
+/**
+ * @constructor
+ * @param {HTMLAnchorElement} link 
+ */
 function VideoLightbox(link) {
-    if (link.ccmVideoLightbox) return;
+    if (link.ccmVideoLightbox) {
+        return;
+    }
     link.ccmVideoLightbox = this;
     this.link = link;
     link.addEventListener('click', (e) => {
@@ -11,56 +36,93 @@ function VideoLightbox(link) {
 }
 
 VideoLightbox.prototype = {
-    open: function() {
-        const videoStyle = [
-            'width: ' + (Number(this.link.dataset['width']) || 640) + 'px',
-            'height: ' + (Number(this.link.dataset['height']) || 320) + 'px',
-        ].join('; ');
-        const viewer = buildViewerHtml(this.link.getAttribute('href'), videoStyle);
-        const dialog = document.createElement('dialog');
-        dialog.className = 'ccm-videolighbox-dialog';
-        dialog.innerHTML = viewer;
-        const titleText = this.link.getAttribute('title');
-        if (titleText) {
-            const title = document.createElement('div');
-            title.className = 'ccm-videolighbox-title';
-            title.textContent = titleText;
-            dialog.appendChild(title);
+    open() {
+        new Viewer(
+            this.link.getAttribute('href'),
+            Number(this.link.dataset['width']) || 640,
+            Number(this.link.dataset['height']) || 320,
+            this.link.getAttribute('title') || ''
+        );
+    },
+};
+
+/**
+ * @constructor
+ * @param {string} videoUrl
+ * @param {Number} fullWidth
+ * @param {Number} fullHeight
+ * @param {string} titleText
+ */
+function Viewer(videoUrl, fullWidth, fullHeight, titleText) {
+    this.fullWidth = fullWidth;
+    this.fullHeight = fullHeight;
+    this.aspectRatio = fullWidth / fullHeight;
+    this.dialog = createElement('dialog', {'class': 'ccm-videolightbox-dialog'});
+    this.viewer = buildViewerElement(videoUrl);
+    this.viewer.width = fullWidth;
+    this.viewer.height = fullHeight;
+    this.dialog.appendChild(this.viewer);
+    if (titleText) {
+        this.title = createElement('div', {'class': 'ccm-videolightbox-title'});
+        this.title.textContent = titleText;
+        this.dialog.appendChild(this.title);
+    }
+    const closeButton = createElement('div', {'class': 'ccm-videolightbox-dialog-close'});
+    closeButton.innerText = '\ud83d\uddd9'; // CANCELLATION X
+    closeButton.addEventListener('click', () => this.dispose());
+    this.dialog.appendChild(closeButton);
+    this.dialog.addEventListener('click', (e) => {
+        if (e.target === this.dialog) {
+            this.dispose();
         }
-        const closeDialog = () => {
-            dialog.close();
-            try {
-                document.body.removeChild(dialog);
-            } catch (e) {
-            }
-        };
-        const closeButton = document.createElement('div');
-        closeButton.innerText = '\ud83d\uddd9'; // CANCELLATION X
-        closeButton.className = 'ccm-videolighbox-dialog-close';
-        closeButton.addEventListener('click', closeDialog);
-        dialog.appendChild(closeButton);
-        document.body.appendChild(dialog);
-        dialog.addEventListener('close', closeDialog);
-        dialog.addEventListener('click', (e) => {
-            if (e.target !== dialog) {
-                return;
-            }
-            const dialogArea = dialog.getBoundingClientRect();
-            if (
-                e.clientX < dialogArea.left
-                || e.clientX > dialogArea.left + dialogArea.width
-                || e.clientY < dialogArea.top
-                || e.clientY > dialogArea.top + dialogArea.height
-            ) {
-                closeDialog();
-            }
+    });
+    this.dialog.addEventListener('close', () => this.dispose());
+    let resizeScheduled = false;
+    this.resizeHandler = () => {
+        if (resizeScheduled) {
+            return;
+        }
+        resizeScheduled = true;
+        window.requestAnimationFrame(() => {
+            resizeScheduled = false;
+            this.resize();
         });
-        dialog.showModal();
+    };
+    this.disposed = false;
+    window.addEventListener('resize', this.resizeHandler);
+    document.body.appendChild(this.dialog);
+    this.dialog.showModal();
+    this.resize();
+}
+Viewer.prototype = {
+    resize() {
+        console.log('resize');
+        if (this.disposed) {
+            return;
+        }
+        const maxWidth = Math.min(window.innerWidth - 80, this.fullWidth);
+        const maxHeight = Math.min(window.innerHeight - 80 - (this.title?.offsetHeight || 0), this.fullHeight);
+        if (maxWidth / maxHeight > this.aspectRatio) {
+            this.viewer.width = maxHeight * this.aspectRatio;
+            this.viewer.height = maxHeight;
+        } else {
+            this.viewer.width = maxWidth;
+            this.viewer.height = maxWidth / this.aspectRatio;
+        }
+    },
+    dispose() {
+        if (this.disposed !== false) {
+            return;
+        }
+        this.disposed = true;
+        window.removeEventListener('resize', this.resizeHandler);
+        this.dialog.remove();
     },
 };
 
 /**
  * @param {URL} url
+ *
  * @returns {{type: 'youtube' | 'vimeo', id: string} | null}
  */
 function extractVideoInfo(url) {
@@ -89,40 +151,53 @@ function extractVideoInfo(url) {
 
 /**
  * @param {string} videoUrl
- * @param {string} style
  *
- * @returns {string}
+ * @returns {HTMLIFrameElement | HTMLVideoElement}
  */
-function buildViewerHtml(videoUrl, style) {
+function buildViewerElement(videoUrl) {
     try {
         const url = new URL(videoUrl);
         const videoInfo = extractVideoInfo(url);
         if (videoInfo) {
             switch (videoInfo.type) {
                 case 'youtube':
-                    return '<iframe style="' + style + '" src="https://www.youtube-nocookie.com/embed/' + videoInfo.id + '?rel=0&autoplay=1" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+                    return createElement('iframe', {
+                        src: 'https://www.youtube-nocookie.com/embed/' + videoInfo.id + '?rel=0&autoplay=1',
+                        allow: 'autoplay; fullscreen',
+                        allowfullscreen: 'allowfullscreen',
+                    });
                 case 'vimeo':
-                    return '<iframe style="' + style + '" src="https://player.vimeo.com/video/' + videoInfo.id + '?autoplay=1" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+                    return createElement('iframe', {
+                        src: 'https://player.vimeo.com/video/' + videoInfo.id + '?autoplay=1',
+                        allow: 'autoplay; fullscreen',
+                        allowfullscreen: 'allowfullscreen',
+                    });
             }
         }
     } catch (e) {
     }
-
-    return '<video style="' + style + '" autoplay src="' + encodeURI(videoUrl) + '"></video>';
+    return createElement('video', {
+        src: videoUrl,
+        autoplay: 'autoplay',
+        controls: 'controls',
+    });
 }
 
-function parseLinks() {
-    if (!document.documentElement.classList.contains('ccm-edit-mode')) {
-        document.querySelectorAll('a.ccm-videolighbox-text, .ccm-videolighbox-image>a').forEach((link) => new VideoLightbox(link));
-    }
-}
 
 window.ccmVideoLightbox = VideoLightbox;
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', parseLinks);
-}
-else {
-    parseLinks();
-}
+(function() {
+    function parseLinks() {
+        if (!document.documentElement.classList.contains('ccm-edit-mode')) {
+            document.querySelectorAll('a.ccm-videolightbox-text, .ccm-videolightbox-image>a').forEach((link) => new VideoLightbox(link));
+        }
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', parseLinks);
+    }
+    else {
+        parseLinks();
+    }        
+})();
+
 })();

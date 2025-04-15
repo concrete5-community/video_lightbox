@@ -1,4 +1,4 @@
-.ccm-videolighbox {
+.ccm-videolightbox {
     clear: both;
     margin: 10px auto;
     padding: 0;
@@ -7,7 +7,7 @@
     max-width: 100%;
 }
 
-.ccm-videolighbox-text {
+.ccm-videolightbox-text {
     background: #fff;
     padding: 5px 10px;
     margin: auto;
@@ -18,32 +18,32 @@
     text-align: center;
 }
 
-.ccm-videolighbox-text:hover {
+.ccm-videolightbox-text:hover {
     background: #f7f7f7;
 }
 
-.ccm-videolighbox-image>* {
+.ccm-videolightbox-image>* {
     clear: both;
     display: block;
 }
-.ccm-videolighbox-image>a {
+.ccm-videolightbox-image>a {
     position: relative;
     background-color: rgba(0, 0, 0, 0.25);
     opacity: 1;
     transition: opacity 0.3s;
 }
 
-.ccm-videolighbox-image>a:hover {
+.ccm-videolightbox-image>a:hover {
     opacity: 0.5;
 }
 
-.ccm-videolighbox-image>a img {
+.ccm-videolightbox-image>a img {
     display: block;
     width: 100%;
     height: auto;
 }
 
-.ccm-videolighbox-image>a i {
+.ccm-videolightbox-image>a i {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -57,7 +57,7 @@
     pointer-events: none;
 }
 
-.ccm-videolighbox-image>div {
+.ccm-videolightbox-image>div {
     padding: 5px;
     margin: 0;
     background: #fafafa;
@@ -65,7 +65,7 @@
     text-align: center;
 }
 
-.ccm-videolighbox-dialog {
+.ccm-videolightbox-dialog {
     display: block;
     background-color: #fff;
     padding: 8px;
@@ -78,20 +78,20 @@
     transform: translate(-50%, -50%);
 }
 
-.ccm-videolighbox-dialog, .ccm-videolighbox-dialog * {
+.ccm-videolightbox-dialog, .ccm-videolightbox-dialog * {
     box-sizing: border-box!important;
 }
-.ccm-videolighbox-dialog * {
+.ccm-videolightbox-dialog * {
     border: 0;
     margin: 0;
     padding: 0;
 }
 
-.ccm-videolighbox-dialog[open] {
-    animation: ccm-videolighbox-dialog-keyframes 0.4s ease-in forwards;
+.ccm-videolightbox-dialog[open] {
+    animation: ccm-videolightbox-dialog-keyframes 0.4s ease-in forwards;
 }
 
-@keyframes ccm-videolighbox-dialog-keyframes {
+@keyframes ccm-videolightbox-dialog-keyframes {
     0% {
         opacity:0;
     }
@@ -100,7 +100,7 @@
     }
 }
 
-.ccm-videolighbox-dialog .ccm-videolighbox-dialog-close {
+.ccm-videolightbox-dialog .ccm-videolightbox-dialog-close {
     position: absolute;
     display: inline-block;
     top: 0;
@@ -116,7 +116,13 @@
     padding: 0px 2px 2px 2px;
 }
 
-.ccm-videolighbox-dialog::backdrop {
+.ccm-videolightbox-dialog::backdrop {
     background-color: #000;
     opacity: 0.8;
+}
+
+.ccm-videolightbox-dialog .ccm-videolightbox-title {
+    line-height: 1;
+    margin: 0;
+    padding: 0;
 }

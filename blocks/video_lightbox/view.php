@@ -39,7 +39,7 @@ if (($vText === '' && $selectedImageFileVersion === null) || $actualVideoURL ===
 if ($vText !== '') {
     ?>
     <a
-        class="ccm-videolighbox ccm-videolighbox-text"
+        class="ccm-videolightbox ccm-videolightbox-text"
         href="<?= h($actualVideoURL) ?>"
         target="_blank"
         data-width="<?= $vWidth ?>"
@@ -53,7 +53,7 @@ if ($vText !== '') {
     <?php
 } else {
     ?>
-    <div class="ccm-videolighbox ccm-videolighbox-image">
+    <div class="ccm-videolightbox ccm-videolightbox-image">
         <a
             href="<?= h($actualVideoURL) ?>"
             target="_blank"
