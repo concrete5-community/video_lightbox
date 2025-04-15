@@ -6,15 +6,19 @@ Video Lightbox II is a simple, easy-to-use package that allows you to add a text
 
 Clicking the link or image opens a clean, responsive, lightbox-style popup that plays a video.
 
-Flexible Video Sources - Choose to play videos from:
-
-- The ConcreteCMS File Manager (MP4 or supported formats)
-- Vimeo
-- YouTube
-
 This plugin is ideal for showcasing video tutorials, promotional content, or any engaging media—without cluttering your page layout.
 
 No coding required: just drop it into the page and configure with a few clicks!
+
+## Features
+
+- Flexible Video Sources - Choose to play videos from:
+  - The ConcreteCMS File Manager (MP4 or supported formats)
+  - Vimeo
+  - YouTube
+- Preview Options
+  - View the image/text link in edit mode - no "Disabled in edit mode" text
+  - Preview the video popup while adding/editing the block (so you can check the URL and sizing without saving first)
 
 ## Notes
 
