@@ -46,36 +46,37 @@ $tabsPrefix = version_compare(APP_VERSION, '9') < 0 ? 'ccm-tab-content-' : '';
                     ],
                     [
                         'v-model' => 'buttonType',
+                        'required' => 'required',
                     ]
                 ) ?>
             </div>
             <div v-show="buttonType === 'image'" class="form-group">
                 <?= $al->image('ccm-videolightbox-editor-image-file', 'selectedImage', t('Choose Image'), $selectedImage) ?>
             </div>
-            <div v-show="buttonType === 'image'" class="form-group">
+            <div v-if="buttonType === 'image'" class="form-group">
                 <?= $form->label('vTitle', t('Image Title')) ?>
                 <?= $form->text('vTitle', '', ['v-model.trim' => 'vTitle', 'maxlength' => '255']) ?>
                 <div class="small text-muted">
                     <?= t('This will also serve as the video title') ?>
                 </div>
             </div>
-            <div v-show="buttonType === 'image'" class="form-group">
+            <div v-if="buttonType === 'image'" class="form-group">
                 <?= $form->label('description', t('Description')) ?>
                 <?= $form->text('description', '', ['v-model.trim' => 'description', 'maxlength' => '255']) ?>
                 <div class="small text-muted">
                     <?= t('Optional text to display below the image') ?>
                 </div>
             </div>
-            <div v-show="buttonType === 'text'" class="form-group">
+            <div v-if="buttonType === 'text'" class="form-group">
                 <?= $form->label('vText', t('Button Text')) ?>
-                <?= $form->text('vText', '', ['v-model.trim' => 'vText', 'maxlength' => '255']) ?>
+                <?= $form->text('vText', '', ['v-model.trim' => 'vText', 'maxlength' => '255', 'required' => 'required']) ?>
                 <div class="small text-muted">
                     <?= t('This will also serve as the video title') ?>
                 </div>
             </div>
-            <div v-show="buttonType === 'text'" class="form-group">
+            <div v-if="buttonType === 'text'" class="form-group">
                 <?= $form->label('bWidth', t('Button width')) ?>
-                <?= $form->text('bWidth', '', ['v-model.trim' => 'bWidth', 'maxlength' => '255']) ?>
+                <?= $form->number('bWidth', '', ['v-model.trim' => 'bWidth', 'maxlength' => '255', 'step' => '1', 'min' => '1']) ?>
             </div>
         </div>
 
@@ -90,6 +91,7 @@ $tabsPrefix = version_compare(APP_VERSION, '9') < 0 ? 'ccm-tab-content-' : '';
                     ],
                     [
                         'v-model' => 'videoType',
+                        'required' => 'required',
                     ]
                 ) ?>
             </div>
@@ -99,9 +101,9 @@ $tabsPrefix = version_compare(APP_VERSION, '9') < 0 ? 'ccm-tab-content-' : '';
                     <?= t('Usually browsers support these video formats: %s', Misc::joinAnd(['MP4', 'WebM'])) ?>
                 </div>
             </div>
-            <div v-show="videoType === 'external'" class="form-group">
+            <div v-if="videoType === 'external'" class="form-group">
                 <?= $form->label('videoURL', t('External URL')) ?>
-                <?= $form->url('videoURL', '', ['v-model.trim' => 'videoURL', 'maxlength' => '255']) ?>
+                <?= $form->url('videoURL', '', ['v-model.trim' => 'videoURL', 'maxlength' => '255', 'required' => 'required']) ?>
                 <div class="small text-muted">
                     <?= t('Examples') ?>
                     <ul>
@@ -115,17 +117,17 @@ $tabsPrefix = version_compare(APP_VERSION, '9') < 0 ? 'ccm-tab-content-' : '';
         <div class="ccm-tab-content tab-pane" role="tabpanel" id="<?= $tabsPrefix ?>videolightbox-editor-videosize">
             <div class="form-group">
                 <?= $form->label('vWidth', t('Width')) ?>
-                <?= $form->text('vWidth', '', ['v-model.trim' => 'vWidth', 'maxlength' => '255']) ?>
+                <?= $form->number('vWidth', '', ['v-model.trim' => 'vWidth', 'maxlength' => '255', 'required' => 'required', 'step' => '1', 'min' => '1']) ?>
             </div>
             <div class="form-group">
                 <?= $form->label('vHeight', t('Height')) ?>
-                <?= $form->text('vHeight', '', ['v-model.trim' => 'vHeight', 'maxlength' => '255']) ?>
+                <?= $form->number('vHeight', '', ['v-model.trim' => 'vHeight', 'maxlength' => '255', 'required' => 'required', 'step' => '1', 'min' => '1']) ?>
             </div>
             <div class="small text-muted">
                 <?= t('Examples') ?>:
                 <ul>
                     <li v-for="s in sampleSizes">
-                        {{ s[0] }}:
+                        <a href="#" v-on:click.prevent="vWidth = s[1]; vHeight = s[2]">{{ s[0] }}</a>:
                         <a href="#" v-on:click.prevent="vWidth = s[1]">{{ s[1] }}</a>
                         &times;
                         <a href="#" v-on:click.prevent="vHeight = s[2]">{{ s[2] }}</a>
@@ -182,6 +184,7 @@ function launchApp() {
             ]) ?>;
         },
         mounted() {
+            this.hookInvalidFields();
             var runScripts = function() {
                 <?= implode("\n", $scripts) ?>;
             };
@@ -253,6 +256,39 @@ function launchApp() {
                     }
                 }
             },
+            hookInvalidFields() {
+                const form = this.$el.closest('form');
+                let reporting = false;
+                form.addEventListener(
+                    'invalid',
+                    (e) => {
+                        if (reporting) {
+                            return;
+                        }
+                        const field = e.target;
+                        if (!field) {
+                            return;
+                        }
+                        const tab = field.closest('.tab-pane');
+                        if (!tab) {
+                            return;
+                        }
+                        const id = tab.getAttribute('id').substring(<?= json_encode($tabsPrefix) ?>.length);
+                        const link = form.querySelector(`.nav-tabs a[href="#${id}"]`) || form.querySelector(`a[data-tab="${id}"]`);
+                        if (!link) {
+                            return;
+                        }
+                        link.click();
+                        reporting = true;
+                        try {
+                            field.reportValidity();
+                        } finally {
+                            reporting = false;
+                        }
+                    },
+                    true
+                );
+            }
         },
     });
 }
