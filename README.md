@@ -24,9 +24,11 @@ No coding required: just drop it into the page and configure with a few clicks!
 
 This is a ConcreteCMS package inspired with the good old [Video Lightbox](https://web.archive.org/web/20180110023334/https://www.concrete5.org/marketplace/addons/video-lightbox) by [Steev Beech](https://community.concretecms.com/members/profile/9622).
 
-Video Lightbox II maintains compatibility with the original version in the following ways:
+Video Lightbox II is a drop-in replacement for the original Video Lightbox, offering the following compatibilities:
 
-- Uses the same database name and field definitions
-- Retains the same package and block type handles
-- Supports MP4 video playback from the Concrete File Manager
-- Supports video embedding from YouTube and Vimeo
+- Compatible database names and field definitions
+- Compatible package and block type handles
+- MP4 video playback support via the Concrete File Manager
+- Video embedding support for YouTube and Vimeo
+
+So, in most cases you can simply replace the `video_lightbox` directory in your `packages` folder with the code from this new package.
