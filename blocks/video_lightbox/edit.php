@@ -24,6 +24,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
  */
 
 $tabsPrefix = version_compare(APP_VERSION, '9') < 0 ? 'ccm-tab-content-' : '';
+ob_start();
 ?>
 <div id="ccm-videolightbox-editor" v-cloak>
 
