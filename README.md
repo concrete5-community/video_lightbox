@@ -1,4 +1,4 @@
-[![Check](https://github.com/concrete5-community/video_lightbox/actions/workflows/check.yml/badge.svg)](https://github.com/concrete5-community/video_lightbox/actions/workflows/check.yml)
+[![Tests](https://github.com/concrete5-community/video_lightbox/actions/workflows/tests.yml/badge.svg)](https://github.com/concrete5-community/video_lightbox/actions/workflows/tests.yml)
 
 # Video Lightbox II for ConcreteCMS
 
@@ -6,7 +6,7 @@ Video Lightbox II is a simple, easy-to-use package that allows you to add a text
 
 Clicking the link or image opens a clean, responsive, lightbox-style popup that plays a video.
 
-This plugin is ideal for showcasing video tutorials, promotional content, or any engaging mediaâ€”without cluttering your page layout.
+This plugin is ideal for showcasing video tutorials, promotional content, or any engaging media—without cluttering your page layout.
 
 No coding required: just drop it into the page and configure with a few clicks!
 

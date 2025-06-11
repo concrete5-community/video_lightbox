@@ -1,11 +1,11 @@
-name: Check
+name: Tests
 
 on:
   push:
     branches:
       - main
     tags-ignore:
-      - '**'
+      - "**"
   pull_request:
     branches:
       - main
@@ -74,6 +74,8 @@ jobs:
           - "9.0"
           - "9.1"
           - "9.2"
+          - "9.3"
+          - "9.4"
           - latest
     steps:
       -
