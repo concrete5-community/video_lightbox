@@ -9,6 +9,7 @@ use Concrete\Core\File\Tracker\FileTrackableInterface;
 use Concrete\Core\Http\ResponseFactoryInterface;
 use Concrete\Core\Localization\Localization;
 use Concrete\Core\Page\Page;
+use Concrete\Core\Statistics\UsageTracker\AggregateTracker;
 
 class Controller extends BlockController implements FileTrackableInterface
 {
@@ -60,6 +61,11 @@ class Controller extends BlockController implements FileTrackableInterface
      * @see \Concrete\Core\Block\BlockController::$btExportFileColumns
      */
     protected $btExportFileColumns = ['selectedImage', 'fID'];
+
+    /**
+     * @var \Concrete\Core\Statistics\UsageTracker\AggregateTracker|null
+     */
+    protected $tracker;
 
     /**
      * Button image.
@@ -275,7 +281,25 @@ class Controller extends BlockController implements FileTrackableInterface
         if (!is_array($normalized)) {
             throw new UserMessageException(implode("\n", $normalized->getList()));
         }
-        return parent::save($normalized);
+        parent::save($normalized);
+        $this->selectedImage = $normalized['selectedImage'];
+        $this->fID = $normalized['fID'];
+        if (version_compare(APP_VERSION, '9.0.2') < 0) {
+            $this->getTracker()->track($this);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\Core\Block\BlockController::delete()
+     */
+    public function delete()
+    {
+        if (version_compare(APP_VERSION, '9.0.2') < 0) {
+            $this->getTracker()->forget($this);
+        }
+        parent::delete();
     }
 
     /**
@@ -400,5 +424,17 @@ class Controller extends BlockController implements FileTrackableInterface
         }
 
         return $errors->has() ? $errors : $normalized;
+    }
+
+    /**
+     * @return \Concrete\Core\Statistics\UsageTracker\AggregateTracker
+     */
+    protected function getTracker()
+    {
+        if ($this->tracker === null) {
+            $this->tracker = $this->app->make(AggregateTracker::class);
+        }
+
+        return $this->tracker;
     }
 }
