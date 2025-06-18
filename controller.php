@@ -3,11 +3,12 @@
 namespace Concrete\Package\VideoLightbox;
 
 use Concrete\Core\Asset\AssetList;
+use Concrete\Core\Database\EntityManager\Provider\ProviderInterface;
 use Concrete\Core\Package\Package;
 
 defined('C5_EXECUTE') or die('Access Denied.');
 
-class Controller extends Package
+class Controller extends Package implements ProviderInterface
 {
     protected $pkgHandle = 'video_lightbox';
 
@@ -60,6 +61,16 @@ class Controller extends Package
     {
         parent::upgrade();
         $this->installContentFile('config/install.xml');
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\Core\Database\EntityManager\Provider\ProviderInterface::getDrivers()
+     */
+    public function getDrivers()
+    {
+        return [];
     }
 
     public function on_start()
