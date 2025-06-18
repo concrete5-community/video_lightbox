@@ -12,7 +12,7 @@ class Controller extends Package implements ProviderInterface
 {
     protected $pkgHandle = 'video_lightbox';
 
-    protected $pkgVersion = '2.0.3';
+    protected $pkgVersion = '2.0.4';
 
     /**
      * {@inheritdoc}
